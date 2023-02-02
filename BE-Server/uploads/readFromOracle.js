@@ -6,9 +6,9 @@ oracledb.initOracleClient({ libDir: 'C:\\Users\\Avanza.MuhammadA\\Desktop\\insta
 export default {
     getNewConnection: async function () {
         var conn = await oracledb.getConnection({
-            user: "TKS_PAS_DBA",
-            password: "TKS_PAS_DBA",
-            connectString: "DNCPRD.DUBAIWORLD.AE:1669/DNCPRD.DUBAIWORLD.AE"
+            user: "",
+            password: "",
+            connectString: ""
         });
         return conn;
     },
