@@ -19,8 +19,8 @@ server.use(bodyParser.json());       // to support JSON-encoded bodies --> POST:
 import fs from 'fs';
 
 
-import dataSource from './uploads/readFileDb.js';    // if you do not have oracle connection available to you use json file
-//import dataSource from './uploads/readFromOracle.js';
+//import dataSource from './uploads/readFileDb.js';    // if you do not have oracle connection available to you use json file
+import dataSource from './uploads/readFromDB.js';
 
 
 // Server 
@@ -28,8 +28,8 @@ server.listen(config.port, config.host, () => {
     console.info('Express listening on port', config.port);
 });
 
-server.get('/api/Staff', (req, res) => {
-    dataSource.getStaffList()   // will send a promise
+server.get('/api/Topics', (req, res) => {
+    dataSource.getTopicsList()   // will send a promise
         .then(result => {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Content-Type', 'application/json');
@@ -38,15 +38,15 @@ server.get('/api/Staff', (req, res) => {
         .catch(err => console.error(err));
 });
 
-server.get('/api/Staff/:id', (req, res) => {
-    const sID = req.params.id;
-    dataSource.getStaffDetail(sID).then(result => {
+server.get('/api/Topics/:id', (req, res) => {
+    const tid = req.params.id;
+    dataSource.getTopicsByID(tid).then(result => {
         res.send(result);
     }).catch(err => console.error(err));
 });
 
-server.get('/api/DESIGNATION', (req, res) => {
-    dataSource.getDesignationList()   // will send a promise
+server.get('/api/Questions', (req, res) => {
+    dataSource.getQuestionsList()   // will send a promise
         .then(result => {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Content-Type', 'application/json');
@@ -54,7 +54,39 @@ server.get('/api/DESIGNATION', (req, res) => {
         }).catch(err => console.error(err));
 });
 
-server.post('/api/Staff/Update', async (req, res) => {
+server.get('/api/Questions/:id', (req, res) => {
+    const qid = req.params.id;
+    dataSource.getQuestionsByID(qid)   // will send a promise
+        .then(result => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Content-Type', 'application/json');
+            res.send(result);
+        }).catch(err => console.error(err));
+});
+
+server.get('/api/Answers', (req, res) => {
+    dataSource.getAnswersList()   // will send a promise
+        .then(result => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Content-Type', 'application/json');
+            res.send(result);
+        }).catch(err => console.error(err));
+});
+
+server.get('/api/Answers/:id', (req, res) => {
+    const aid = req.params.id;
+    dataSource.getAnswersByID(aid)   // will send a promise
+        .then(result => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Content-Type', 'application/json');
+            res.send(result);
+        }).catch(err => console.error(err));
+});
+
+
+
+
+server.post('/api/Topic/Update', async (req, res) => {
     try {
 
         if (!req.files) {
@@ -147,7 +179,7 @@ server.get('/backend_test', (req, res) => {
         console.log(tools.setStaffDetailByIDToFile(item));*/
 
         //dataSource.getDesignationList().then(obj => {
-            //console.log(obj);
+        //console.log(obj);
         //});
         console.log('Start!');
     } catch (err) {
@@ -155,7 +187,7 @@ server.get('/backend_test', (req, res) => {
         console.error(err);
     }
     res.send({ express: 'Server is running' });
-}); 
+});
 
 
 function formatDate(date) {
