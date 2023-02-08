@@ -295,6 +295,30 @@ export default {
         }
     },
 
+    updateTopic: async function (param) {
+        var result = 0;
+        var connection = null;
+        try {
+            connection = await this.getNewConnection();
+            let sql = `UPDATE Topics SET TopicName='${param.TopicName}' WHERE TID=${param.TID}`;
+
+            await connection.execute(sql);
+            result = 1;
+        } catch (err) {
+            result = -1;
+        } finally {
+            if (connection) {
+                try {
+                    // Always close connections
+                    await connection.State && connection.Close();
+                } catch (err) {
+                    result = -1;
+                }
+                return result;
+            }
+        }
+    },
+
     formatDate: function (date) {
         var mn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
