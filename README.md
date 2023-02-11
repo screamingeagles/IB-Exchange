@@ -4,7 +4,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+first open command prompt and navigate to project folder.
+
+In the project directory, type below command on the prompt and press enter:
 
 ### `npm start`
 
@@ -14,10 +16,24 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### Download and Install `AccessDatabaseEngine.exe`
+
+Navigate to URL: https://www.microsoft.com/en-us/download/details.aspx?id=54920 and download your driver based on your machines (32 bit / 64 bit)
+
+Download the file by clicking the Download button and saving the file to your hard disk.
+
+Double-click the AccessDatabaseEngine.exe program file on your hard disk to start the setup program.
+
+Follow the instructions on the screen to complete the installation.
+
+To use this download:
+
+If you are the user of an application, consult your application documentation for details on how to use the appropriate driver.
+
+If you are an application developer using OLEDB, set the Provider argument of the ConnectionString property to “Microsoft.ACE.OLEDB.12.0”
+
 
 ### `npm run build`
 
@@ -29,15 +45,22 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### `install Node JS`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Note: Your installation file version may be different at the time of your installation. URL `https://nodejs.org/en/download/`, but please only select LTE!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Select the Windows installer according to your system environment (32-bit or 64-bit).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Run the downloaded Node.js installer. 
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Accept the license agreement. You can leave other settings as default. The installer will install Node.js and prompt you to click on the finish button.
+
+Verify that Node.js was properly installed by opening the command prompt and typing this command: node --version
+
+When we install Node.js, NPM (Node Package Manager) also gets installed. NPM is included in the installation as it includes many libraries that are used in web applications like React. So let’s verify if it's installed using this command in cmd: npm --version
+
+That’s all we need to do for a successful Node.js installation on a Windows system! If you're a Windows user, you can skip the next section and jump straight to the section in which we'll create a basic Node.js server to verify if everything works as expected.
+
 
 ## Learn More
 
