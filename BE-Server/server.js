@@ -64,6 +64,17 @@ server.get('/api/Questions/:id', (req, res) => {
         }).catch(err => console.error(err));
 });
 
+
+server.get('/api/QuestionsByTopicID/:id', (req, res) => {
+    const tid = req.params.id;
+    dataSource.getQuestionsByTopicID(tid)   // will send a promise
+        .then(result => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Content-Type', 'application/json');
+            res.send(result);
+        }).catch(err => console.error(err));
+});
+
 server.get('/api/Answers', (req, res) => {
     dataSource.getAnswersList()   // will send a promise
         .then(result => {
@@ -84,6 +95,20 @@ server.get('/api/Answers/:id', (req, res) => {
 });
 
 
+server.get('/api/TestUpdate', (req, res) => {
+
+    let item = {
+        "TID": 1,
+        "TopicName": "Maths",
+    };
+    dataSource.updateTopic(item).then(obj => {
+        res.send({
+            status: true,
+            message: 'Completed',
+            data: { 'Rows Affected': obj }
+        });
+    }).catch(err => { res.status(500).send(err); });
+});
 
 
 server.post('/api/Topic/Update', async (req, res) => {

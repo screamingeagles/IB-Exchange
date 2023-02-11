@@ -99,7 +99,8 @@ export default {
             connection = await this.getNewConnection();
 
             // qry for database
-            let sql = "SELECT Questions.QID, Questions.Question, Topics.TID, Topics.TopicName, Users.UID, Users.UserName, Answers.AID, Answers.AnswerText " +
+            let sql = "SELECT Questions.QID, Questions.Question, Questions.QuestionDescription, Topics.TID, " +
+                "Topics.TopicName, Users.UID, Users.UserName, Answers.AID, Answers.AnswerText " +
                 "FROM " +
                 "((Questions INNER JOIN Topics ON Questions.TID = Topics.TID) INNER JOIN " +
                 "Users ON Questions.UID = Users.UID) INNER JOIN " +
@@ -112,6 +113,7 @@ export default {
                         let elm = {
                             QID: element.QID,
                             Question: element.Question,
+                            QuestionDescription: element.QuestionDescription,
                             TID: element.TID,
                             TopicName: element.TopicName,
                             UID: element.UID,
@@ -147,8 +149,8 @@ export default {
             connection = await this.getNewConnection();
 
             // qry for database
-            // qry for database
-            let sql = "SELECT Questions.QID, Questions.Question, Topics.TID, Topics.TopicName, Users.UID, Users.UserName, Answers.AID, Answers.AnswerText " +
+            let sql = "SELECT Questions.QID, Questions.Question, Questions.QuestionDescription, Topics.TID, " +
+                "Topics.TopicName, Users.UID, Users.UserName, Answers.AID, Answers.AnswerText " +
                 "FROM " +
                 "((Questions INNER JOIN Topics ON Questions.TID = Topics.TID) INNER JOIN " +
                 "Users ON Questions.UID = Users.UID) INNER JOIN " +
@@ -164,12 +166,62 @@ export default {
                         let elm = {
                             QID: element.QID,
                             Question: element.Question,
+                            QuestionDescription: element.QuestionDescription,
                             TID: element.TID,
                             TopicName: element.TopicName,
                             UID: element.UID,
                             UserName: element.UserName,
                             AID: element.AID,
                             AnswerText: element.AnswerText
+                        };
+                        result.push(elm);
+                    });
+                }).catch(error => {
+                    console.error(error);
+                });
+        } catch (err) {
+            console.error(err.message);
+        } finally {
+            if (connection) {
+                try {
+                    // Always close connections
+                    await connection.State && connection.Close();
+                } catch (err) {
+                    console.error(err.message);
+                }
+                return result;
+            }
+        }
+    },
+
+    getQuestionsByTopicID: async function (param) {
+        var result = [];
+        var connection = null;
+        try {
+            connection = await this.getNewConnection();
+
+            // qry for database
+            let sql = "SELECT Topics.TID , Topics.TopicName, Questions.QID, Questions.Question, Questions.QuestionDescription, Questions.QuestionDescription, " +
+                "Questions.CorrectAnswer, Users.UID, Users.UserName FROM " +
+                "(Topics INNER JOIN Questions ON Topics.TID = Questions.TID) INNER JOIN Users ON Questions.UID = Users.UID " +
+                "Where Topics.TID=" + param;
+
+            // Query the DB
+            await connection.query(sql)
+                .then(data => {
+
+                    // iterate over data and create result
+                    data.forEach(element => {
+                        let elm = {
+                            QID: element.QID,
+                            Question: element.Question,
+                            QuestionDescription: element.QuestionDescription,
+
+                            TID: element.TID,
+                            TopicName: element.TopicName,
+
+                            UID: element.UID,
+                            UserName: element.UserName,
                         };
                         result.push(elm);
                     });
@@ -198,7 +250,8 @@ export default {
             connection = await this.getNewConnection();
 
             // qry for database
-            let sql = "SELECT Answers.AID, Answers.AnswerText, Questions.QID, Questions.Question, Questions.CorrectAnswer, Topics.TID, Topics.TopicName, Users.UID, Users.UserName " +
+            let sql = "SELECT Answers.AID, Answers.AnswerText, Questions.QID, Questions.Question, Questions.CorrectAnswer, " +
+                "Questions.QuestionDescription, Topics.TID, Topics.TopicName, Users.UID, Users.UserName " +
                 "FROM " +
                 "((Answers INNER JOIN Questions ON Answers.QID = Questions.QID) INNER JOIN " +
                 "Topics ON Questions.TID = Topics.TID) INNER JOIN " +
@@ -215,6 +268,7 @@ export default {
                             QID: element.QID,
                             Question: element.Question,
                             CorrectAnswer: element.CorrectAnswer,
+                            QuestionDescription: element.QuestionDescription,
 
                             UID: element.UID,
                             UserName: element.UserName,
@@ -250,7 +304,8 @@ export default {
             connection = await this.getNewConnection();
 
             // qry for database
-            let sql = "SELECT Answers.AID, Answers.AnswerText, Questions.QID, Questions.Question, Questions.CorrectAnswer, Topics.TID, Topics.TopicName, Users.UID, Users.UserName " +
+            let sql = "SELECT Answers.AID, Answers.AnswerText, Questions.QID, Questions.Question, Questions.CorrectAnswer," +
+                "Questions.QuestionDescription, Topics.TID, Topics.TopicName, Users.UID, Users.UserName " +
                 "FROM " +
                 "((Answers INNER JOIN Questions ON Answers.QID = Questions.QID) INNER JOIN " +
                 "Topics ON Questions.TID = Topics.TID) INNER JOIN " +
@@ -267,6 +322,7 @@ export default {
                             QID: element.QID,
                             Question: element.Question,
                             CorrectAnswer: element.CorrectAnswer,
+                            QuestionDescription: element.QuestionDescription,
 
                             UID: element.UID,
                             UserName: element.UserName,

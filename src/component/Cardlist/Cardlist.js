@@ -1,58 +1,63 @@
 import './Cardlist.css';
 import React from 'react';
+import Question from '../QuestionList/QuestionList';
 
 class CardlistComponent extends React.Component {
-  render(){
-    return (
-      <div className="card">
-      <div className="card-header">
-        <h3 className="card-title">Items Table</h3>
 
-        <div className="card-tools">
-          <div className="input-group input-group-sm" style={{width: 150 + 'px'}}>
-            <input type="text" name="table_search" className="form-control float-right" placeholder="Search" />
+  fetchData() {
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Access-Control-Allow-Credentials', 'false');
+    headers.append('GET', 'POST', 'OPTIONS');
 
-            <div className="input-group-append">
-              <button type="submit" className="btn btn-default">
-                <i className="fas fa-search"></i>
-              </button>
-            </div>
+    let params = {
+      headers: headers,
+      method: "GET"
+    }
+
+    fetch('http://localhost:5050/api/Topics', params)
+      .then((response) => { return response.json(); })
+      .then((obj) => {
+        this.setState({ topics: obj });
+      }).catch(err => { console.log(err); });
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      topics: ''
+    };
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  render() {
+
+    const cardBlocks = this.state.topics && this.state.topics.map(item =>
+      <div className="col-md-6" key={item.TID}>
+        <div className="card card-default">
+          <div className="card-header">
+            <h3 className="card-title">
+              <i className="fas fa-bullhorn"></i>
+              &nbsp; {item.TopicName}
+            </h3>
+          </div>
+          <div className="card-body">
+            <Question topicID={item.TID} />
           </div>
         </div>
       </div>
-      {/* /.card-header */}
-      <div className="card-body table-responsive p-0" style={{height: 300 + 'px'}}>
-        <table className="table table-head-fixed text-nowrap">
-          <thead>
-            <tr>
-              <th>ID -1</th>
-              <th>User</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>183</td>
-              <td>John Doe</td>
-              <td>11-7-2014</td>
-              <td>
-                <div className="form-group">
-                  <div className="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                    <input type="checkbox" className="custom-control-input" id="customSwitch3" />
-                    <label className="custom-control-label" >Disabled</label>
-                  </div>
-                  </div>
-                </td>
-              <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-            </tr>
-          </tbody>
-        </table>
+    );
+
+
+    return (
+      <div className="row">
+        {cardBlocks}
       </div>
-      {/* /.card-body */}
-      </div>
-    )
+    );
   }
 }
 export default CardlistComponent;
