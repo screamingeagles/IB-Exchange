@@ -1,5 +1,7 @@
 import './Sidebar.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Topics from '../Topics/Topics';
 
 class sideBarComponent extends React.Component {
 
@@ -41,14 +43,15 @@ class sideBarComponent extends React.Component {
   render() {
     const menuRows = this.state.menus && this.state.menus.map((link) =>
       <li className="nav-item" key={link.TID}>
-        <a href="false" className="nav-link">
+        <Link to={`/Topics/${link.TID}`} component={Topics} key={link.TID} className="nav-link">
           <i className="nav-icon fas fa-th"></i>
           <p>{link.TopicName}</p>
-        </a>
-      </li>
+        </Link>
+      </li >
     );
 
     return (
+
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
         {/*  Brand Logo */}
         <a href="false" className="brand-link">
@@ -81,6 +84,7 @@ class sideBarComponent extends React.Component {
         </div>
         {/*  -- /.sidebar -- */}
       </aside>
+
     )
   }
 }

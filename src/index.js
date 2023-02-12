@@ -3,10 +3,21 @@ import ReactDOM from 'react-dom';
 import '../src/index.css';
 import App from './component/App/App';
 import reportWebVitals from './reportWebVitals';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from 'react-router-dom';
+import Topics from './component/Topics/Topics';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="Topics/:TID" element={<Topics />} />
+      </Routes>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

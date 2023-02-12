@@ -24,7 +24,6 @@ const QuestionList = ({ topicID }) => {
     fetch(`http://localhost:5050/api/QuestionsByTopicID/${topicID}`, params)
       .then((response) => { return response.json(); })
       .then((obj) => {
-        console.log(obj);
         setQuestions(obj);
       }).catch(err => { console.log(err); });
 
@@ -36,7 +35,7 @@ const QuestionList = ({ topicID }) => {
       {questions && questions.map(item =>
         <>
           <h5 key={item.QID}> {item.Question} </h5>
-          <p key={item.QID}> {item.QuestionDescription} </p>
+          <p key={item.QID + 100}> {item.QuestionDescription} </p>
         </>
       )}
     </div>
