@@ -1,14 +1,11 @@
 import './Topics.css';
 import React from 'react';
-import Question from '../QuestionList/QuestionList';
-//import { useParams } from "react-router-dom";
-//import { withRouter } from "react-router";
-
+import QuestionList from '../QuestionList/QuestionList';
 
 class TopicsComponent extends React.Component {
 
   fetchData(paramID) {
-
+    console.log("fetch called with :" + paramID);
     let headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -27,31 +24,22 @@ class TopicsComponent extends React.Component {
       }).catch(err => { console.log(err); });
   }
 
-  // const { match } = this.props;
+  
 
   constructor(props) {
     super(props);
-
-    //console.log("--------------");
-    // let { id } = this.props;
-    //console.log(id);
-    //const { TopicID } = this.props;
-    //console.log(studentId);
-    //console.log("--------------");
-
     this.state = {
       question: ''
     };
   }
 
   componentDidMount() {
-    this.fetchData(5);
+    const params = window.location.href.split('/');
+    const TopicID = params[params.length-1];
+    this.fetchData(TopicID);
   }
 
   render() {
-
-
-
     const cardBlocks = this.state.question && this.state.question.map(item =>
       <div className="col-md-12" key={item.TID}>
         <div className="card card-default">
@@ -62,12 +50,11 @@ class TopicsComponent extends React.Component {
             </h3>
           </div>
           <div className="card-body">
-            <Question topicID={item.TID} />
+            <QuestionList topicID={item.TID} />
           </div>
         </div>
       </div>
-    );
-
+    );    
 
     return (
       <div className="row">

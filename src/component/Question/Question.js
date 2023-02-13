@@ -1,11 +1,12 @@
-import './QuestionList.css';
+import './Question.css';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Question from '../Question/Question';
+import {Editor, EditorState} from 'draft-js';
 
-const QuestionList = ({ topicID }) => {
+const Question = ({ QID }) => {
 
-  let [questions, setQuestions] = React.useState([]) // state hook
+  let [question, setQuestion] = React.useState([]) // state hook
+
+  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
   React.useEffect(() => {                           // side effect hook
 
@@ -21,24 +22,45 @@ const QuestionList = ({ topicID }) => {
       method: "GET"
     }
 
-    fetch(`http://localhost:5050/api/QuestionsByTopicID/${topicID}`, params)
+    fetch(`http://localhost:5050/api/Questions/${QID}`, params)
       .then((response) => { return response.json(); })
       .then((obj) => {
-        setQuestions(obj);
+        setQuestion(obj);
       }).catch(err => { console.log(err); });
 
-  }, [topicID])
+  }, [QID])
 
+  function getBlockStyle(block) {
+    switch (block.getType()) {
+      case 'blockquote': return 'RichEditor-blockquote';
+      default: return null;
+    }
+  }
 
+  // Custom overrides for "code" style.
+  const styleMap = {
+    CODE: {
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+      fontSize: 16,
+      padding: 2,
+    },
+  };
+
+  
+  //https://codepen.io/AvanthikaMeenakshi/pen/MWWpOJz
+  //https://blog.logrocket.com/build-rich-text-editors-react-draft-js-react-draft-wysiwyg/
   return (
-    <div className="callout callout-info" key={topicID}>
-      {questions && questions.map(item =>
-        <React.Fragment key={item.QID}>
-          <Link to={`/Question/${item.QID}`} component={Question} key={item.QID} className="nav-link">
+    <div className="callout callout-info" key={QID}>
+      {question && question.map(item =>
+        <React.Fragment key={item.QID}>          
 	          <h5> {item.Question} </h5>
-          </Link>
-
-          <p> {item.QuestionDescription} </p>
+            <p> {item.QuestionDescription} </p>
+            <Editor editorState={editorState}
+               placeholder="Tell a story..."
+               blockStyleFn={getBlockStyle}
+                  customStyleMap={styleMap}
+             onChange={setEditorState} />
         </React.Fragment>
       )}
     </div>
@@ -46,7 +68,7 @@ const QuestionList = ({ topicID }) => {
 };
 
 
-export default QuestionList;
+export default Question;
 
 /*
 
