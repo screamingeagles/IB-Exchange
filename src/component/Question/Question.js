@@ -1,16 +1,17 @@
 import './Question.css';
 import React, { useState, useEffect } from 'react';
-import {Editor, EditorState} from 'draft-js';
+import { Editor, EditorState } from 'draft-js';
+import { useParams } from 'react-router-dom';
 
-const Question = ({ QID }) => {
+const Question = () => {
+
+  const { QID } = useParams();
 
   let [question, setQuestion] = React.useState([]) // state hook
 
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+  React.useEffect(() => {
+    console.log("QID changed: " + QID);
 
-  React.useEffect(() => {                           // side effect hook
-
-    // call API with props.greeting parameter
     let headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -28,7 +29,8 @@ const Question = ({ QID }) => {
         setQuestion(obj);
       }).catch(err => { console.log(err); });
 
-  }, [QID])
+  }, [QID]);
+
 
   function getBlockStyle(block) {
     switch (block.getType()) {
@@ -47,23 +49,56 @@ const Question = ({ QID }) => {
     },
   };
 
-  
-  //https://codepen.io/AvanthikaMeenakshi/pen/MWWpOJz
-  //https://blog.logrocket.com/build-rich-text-editors-react-draft-js-react-draft-wysiwyg/
+
   return (
-    <div className="callout callout-info" key={QID}>
-      {question && question.map(item =>
-        <React.Fragment key={item.QID}>          
-	          <h5> {item.Question} </h5>
-            <p> {item.QuestionDescription} </p>
-            <Editor editorState={editorState}
-               placeholder="Tell a story..."
-               blockStyleFn={getBlockStyle}
-                  customStyleMap={styleMap}
-             onChange={setEditorState} />
-        </React.Fragment>
-      )}
-    </div>
+
+    <div className="content-wrapper">
+      {/* Content Header (Page header)  for topics Bread crum */}
+      <section className="content-header">
+        <div className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-sm-6">
+              <h1>Discussion Board</h1>
+            </div>
+            <div className="col-sm-6">
+              <ol className="breadcrumb float-sm-right">
+                <li className="breadcrumb-item"><a href="#/">Home</a></li>
+                <li className="breadcrumb-item active">Topics</li>
+              </ol>
+            </div>
+          </div>
+        </div>{/* /.container-fluid */}
+      </section >
+
+      {/* Main content */}
+      < section className="content" >
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12">
+              {question && question.map(item =>
+                <div className="col-md-12" key={item.TID}>
+                  <div className="card card-default">
+                    <div className="card-header">
+                      <h3 className="card-title">
+                        <i className="fas fa-bullhorn"></i>
+                        &nbsp; {item.TopicName}
+                      </h3>
+                    </div>
+                    <div className="card-body">
+                      <div className="callout callout-info" >
+                        <h5> {item.Question} </h5>
+                        <p> {item.QuestionDescription} </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* .content */}
+    </div >
   );
 };
 
@@ -106,58 +141,10 @@ export default Question;
     //     <p>{row.QuestionDescription}</p>
     //   </div>
     // });
-
-    // console.log("----------");
-    // console.log(item);
-    // console.log("----------");
-
-
+  <Editor
+            placeholder="Tell a story..."
+            blockStyleFn={getBlockStyle}
+            customStyleMap={styleMap} />
     //});
 
-  fetchData() {
-    let headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Credentials', 'false');
-    headers.append('GET', 'POST', 'OPTIONS');
-
-    let params = {
-      headers: headers,
-      method: "GET"
-    }
-
-    fetch('http://localhost:5050/api/Questions', params)
-      .then((response) => { return response.json(); })
-      .then((obj) => {
-        this.setState({ questions: obj }, () => {
-
-          // this is the call back function of set state for topics         
-
-          let index = 0;
-          let tempList = [];
-          let banner = ['callout-info', 'callout-danger', 'callout-warning', 'callout-success', 'callout-info'];
-
-          this.state.questions && this.state.questions.forEach(ques => {
-
-            // temporary check item
-            var isPresent = false;
-
-            // check if item exists in topics array
-            isPresent = tempList.filter(item => { if (item.TID == ques.TID) { return true; } });
-
-            // add the item in topics array if the element does not exists already
-            if (isPresent == false) {
-              var hold = { TID: ques.TID, TopicName: ques.TopicName, Header: banner[(index % 5)] };
-              tempList.push(hold);
-              index++;
-            }
-
-          });
-          this.setState({ topics: tempList });
-
-          // set state call back function ends here...
-        });
-      })
-      .catch(err => { console.log(err); });
-  }
 */

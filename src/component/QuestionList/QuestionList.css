@@ -1,0 +1,9 @@
+a {
+    text-decoration: none !important;
+}
+
+h5:hover {
+    color: black;
+    background-color: white;
+    transition: 0.2s;
+}

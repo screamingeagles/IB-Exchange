@@ -24,16 +24,13 @@ function Content() {
       {/* Main content */}
       <section className="content">
         <div className="container-fluid">
-          {/* /.row */}
           <div className="row">
             <div className="col-12">
               {/*  all of the elements will come here in card */}
               <CardlistComponent />
-
             </div>
           </div>
-          {/* .row */}
-        </div>{/* .container-fluid */}
+        </div>
       </section>
       {/* .content */}
     </div>

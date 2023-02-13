@@ -34,8 +34,8 @@ const QuestionList = ({ topicID }) => {
     <div className="callout callout-info" key={topicID}>
       {questions && questions.map(item =>
         <React.Fragment key={item.QID}>
-          <Link to={`/Question/${item.QID}`} component={Question} key={item.QID} className="nav-link">
-	          <h5> {item.Question} </h5>
+          <Link to={`/Question/${item.QID}`} component={Question}>
+            <h5> {item.Question} </h5>
           </Link>
 
           <p> {item.QuestionDescription} </p>
