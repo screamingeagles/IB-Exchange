@@ -1,7 +1,7 @@
 import './Topics.css';
 import React from 'react';
-import QuestionList from '../QuestionList/QuestionList';
 import { useParams } from 'react-router-dom';
+import QuestionList from '../QuestionList/QuestionList';
 
 
 const Topics = () => {

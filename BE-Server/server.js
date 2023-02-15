@@ -94,6 +94,16 @@ server.get('/api/Answers/:id', (req, res) => {
         }).catch(err => console.error(err));
 });
 
+server.get('/api/AnswersByQuestionID/:id', (req, res) => {
+    const qid = req.params.id;
+    dataSource.getAnswersByQuestionID(qid)   // will send a promise
+        .then(result => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Content-Type', 'application/json');
+            res.send(result);
+        }).catch(err => console.error(err));
+});
+
 
 server.get('/api/TestUpdate', (req, res) => {
 
@@ -111,7 +121,7 @@ server.get('/api/TestUpdate', (req, res) => {
 });
 
 
-server.post('/api/Topic/Update', async (req, res) => {
+server.post('/api/Answer/Add', async (req, res) => {
     try {
 
         if (!req.files) {

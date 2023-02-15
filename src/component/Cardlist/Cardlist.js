@@ -1,5 +1,6 @@
 import './Cardlist.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Question from '../QuestionList/QuestionList';
 
 class CardlistComponent extends React.Component {
@@ -40,16 +41,18 @@ class CardlistComponent extends React.Component {
       <div className="col-md-6" key={item.TID}>
         <div className="card card-default">
           <div className="card-header">
-            <h3 className="card-title">
-              <i className="fas fa-bullhorn"></i>
-              &nbsp; {item.TopicName}
-            </h3>
+            <Link to={`/Topics/${item.TID}`}>
+              <h3 className="card-title">
+                <i className={`fas ${item.TopicIcons}`}></i>
+                &nbsp; {item.TopicName}
+              </h3>
+            </Link>
           </div>
           <div className="card-body">
             <Question topicID={item.TID} />
           </div>
         </div>
-      </div>
+      </div >
     );
 
 

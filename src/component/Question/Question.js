@@ -1,7 +1,8 @@
 import './Question.css';
-import React, { useState, useEffect } from 'react';
-import { Editor, EditorState } from 'draft-js';
+import Answers from '../Answers/Answers';
 import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+
 
 const Question = () => {
 
@@ -10,7 +11,6 @@ const Question = () => {
   let [question, setQuestion] = React.useState([]) // state hook
 
   React.useEffect(() => {
-    console.log("QID changed: " + QID);
 
     let headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -32,21 +32,20 @@ const Question = () => {
   }, [QID]);
 
 
-  function getBlockStyle(block) {
-    switch (block.getType()) {
-      case 'blockquote': return 'RichEditor-blockquote';
-      default: return null;
-    }
-  }
 
-  // Custom overrides for "code" style.
-  const styleMap = {
-    CODE: {
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-      fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-      fontSize: 16,
-      padding: 2,
-    },
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    // let formData = new FormData()
+    // formData.append('QID', this.state.newStaff.QID);
+    // formData.append('UIQ', this.state.newStaff.UID);
+    // formData.append('LastName', this.state.newStaff.LName);
+
+    // const response = await fetch('http://localhost:5050/api/Answer/Add', {
+    //   method: 'POST',
+    //   body: formData,
+    // });
+    alert("Save Your Answer");
   };
 
 
@@ -54,49 +53,55 @@ const Question = () => {
 
     <div className="content-wrapper">
       {/* Content Header (Page header)  for topics Bread crum */}
-      <section className="content-header">
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1>Discussion Board</h1>
-            </div>
-            <div className="col-sm-6">
-              <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item"><a href="#/">Home</a></li>
-                <li className="breadcrumb-item active">Topics</li>
-              </ol>
-            </div>
-          </div>
-        </div>{/* /.container-fluid */}
-      </section >
 
-      {/* Main content */}
-      < section className="content" >
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              {question && question.map(item =>
-                <div className="col-md-12" key={item.TID}>
-                  <div className="card card-default">
-                    <div className="card-header">
-                      <h3 className="card-title">
-                        <i className="fas fa-bullhorn"></i>
-                        &nbsp; {item.TopicName}
-                      </h3>
-                    </div>
-                    <div className="card-body">
-                      <div className="callout callout-info" >
-                        <h5> {item.Question} </h5>
-                        <p> {item.QuestionDescription} </p>
+      {question && question.map(item =>
+        <React.Fragment key={item.TID}>
+          <section className="content-header">
+            <div className="container-fluid">
+              <div className="row mb-2">
+                <div className="col-sm-6">
+                  <h1>{item.Question}</h1>
+                </div>
+                <div className="col-sm-6">
+                  <ol className="breadcrumb float-sm-right">
+                    <li className="breadcrumb-item">Home</li>
+                    <li className="breadcrumb-item">Topics</li>
+                    <li className="breadcrumb-item active">{item.TopicName}</li>
+                  </ol>
+                </div>
+              </div>
+            </div>{/* /.container-fluid */}
+          </section>
+
+          <section className="content">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-12">
+
+                  <div className="col-md-12">
+                    <div className="card card-primary card-outline">
+                      <div className="card-header">
+                        <h5 className="card-title m-0">{item.QuestionDescription}</h5>
+                      </div>
+                      <div className="card-body">
+                        <div className="card-text">
+                          <Answers />
+                        </div>
+                        <div>
+                          <hr style={{ width: 50 + '%' }} />
+                          <br />
+                          <textarea rows={3} cols={125} placeholder="Give us your Shout..."></textarea>
+                          <a onClick={e => { submitHandler(e) }} className="btn btn-primary">Give your Opinion!</a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        </React.Fragment>
+      )}
       {/* .content */}
     </div >
   );

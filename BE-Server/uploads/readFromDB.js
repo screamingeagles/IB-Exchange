@@ -23,7 +23,8 @@ export default {
                     data.forEach(element => {
                         let elm = {
                             TID: element.TID,
-                            TopicName: element.TopicName
+                            TopicName: element.TopicName,
+                            TopicIcons: element.TopicIcons
                         };
                         result.push(elm); //console.log(element);
                     });
@@ -242,6 +243,59 @@ export default {
             }
         }
     },
+
+    getAnswersByQuestionID: async function (param) {
+        var result = [];
+        var connection = null;
+        try {
+            connection = await this.getNewConnection();
+
+            // qry for database
+            let sql = "SELECT Users.UID, Users.UserName,  Answers.QID, Answers.AID, Answers.AnswerText, " +
+                "Questions.CorrectAnswer, Answers.AnswerDate " +
+                "FROM " +
+                "(Users INNER JOIN Answers ON Users.UID = Answers.UID) INNER JOIN " +
+                "Questions ON Answers.QID = Questions.QID " +
+                "WHERE Answers.QID=" + param;
+
+            // Query the DB
+            await connection.query(sql)
+                .then(data => {
+
+                    // iterate over data and create result
+                    data.forEach(element => {
+                        let elm = {
+                            UID: element.UID,
+                            UserName: element.UserName,
+
+                            QID: element.QID,
+                            CorrectAnswer: element.CorrectAnswer,
+
+                            AID: element.AID,
+                            AnswerDate: new Date(element.AnswerDate).toString().replace(" GMT+0400 (Gulf Standard Time)", ""),
+                            AnswerText: element.AnswerText
+                        };
+                        result.push(elm);
+                    });
+                }).catch(error => {
+                    console.error(error);
+                });
+        } catch (err) {
+            console.error(err.message);
+        } finally {
+            if (connection) {
+                try {
+                    // Always close connections
+                    await connection.State && connection.Close();
+                } catch (err) {
+                    console.error(err.message);
+                }
+                return result;
+            }
+        }
+    },
+
+
 
     getAnswersList: async function () {
         var result = [];

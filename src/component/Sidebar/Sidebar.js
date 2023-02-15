@@ -44,7 +44,7 @@ class sideBarComponent extends React.Component {
     const menuRows = this.state.menus && this.state.menus.map((link) =>
       <li className="nav-item" key={link.TID}>
         <Link to={`/Topics/${link.TID}`} className="nav-link">
-          <i className="nav-icon fas fa-th"></i>
+          <i className={`nav-icon ${link.TopicIcons}`}></i>
           <p>{link.TopicName}</p>
         </Link>
       </li >
@@ -54,10 +54,10 @@ class sideBarComponent extends React.Component {
 
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
         {/*  Brand Logo */}
-        <a className="brand-link">
+        <Link to={`/`} className="brand-link">
           <img src="/logo.svg" alt="Logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
           <span className="brand-text font-weight-light">IB Exchange</span>
-        </a>
+        </Link>
 
         {/*  -- Sidebar -- */}
         <div className="sidebar">
@@ -66,16 +66,25 @@ class sideBarComponent extends React.Component {
           <nav className="mt-2">
             <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               {/*  -- Add icons to the links using the .nav-icon className with font-awesome or any other icon font library -- */}
-              <li className="nav-item">
-                <a className="nav-link">
+              <li className="nav-item menu-open">
+                <Link to={`/`} className="nav-link">
                   <i className="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                     Home Page
                     <i className="right fas fa-angle-left"></i>
                   </p>
-                </a>
+                </Link>
                 <ul className="nav nav-treeview">
                   {menuRows}
+                </ul>
+
+                <ul className="nav nav-treeview">
+                  <li className="nav-link active">
+                    <Link to={`/Answers`} className="nav-link">
+                      <i className="nav-icon fa fa-book"></i>
+                      <p>Post a Question</p>
+                    </Link>
+                  </li >
                 </ul>
               </li>
             </ul>
