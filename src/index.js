@@ -13,6 +13,7 @@ import Topics from './component/Topics/Topics';
 import Sidebar from './component/Sidebar/Sidebar';
 import Content from './component/Content/Content';
 import Question from './component/Question/Question';
+import Opinion from './component/Opinion/Opinion';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.render(
         <Sidebar />
         <Routes>
           <Route path="/" element={<Content />} />
+          <Route path="Opinion" element={<Opinion />} />
           <Route path="Topics/:TID" element={<Topics />} />
           <Route path="Question/:QID" element={<Question />} />
         </Routes>

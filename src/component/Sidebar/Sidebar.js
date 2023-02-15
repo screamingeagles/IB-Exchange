@@ -1,7 +1,7 @@
 import './Sidebar.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Topics from '../Topics/Topics';
+// import Topics from '../Topics/Topics';
 
 class sideBarComponent extends React.Component {
 
@@ -80,7 +80,7 @@ class sideBarComponent extends React.Component {
 
                 <ul className="nav nav-treeview">
                   <li className="nav-link active">
-                    <Link to={`/Answers`} className="nav-link">
+                    <Link to={`/Opinion`} className="nav-link">
                       <i className="nav-icon fa fa-book"></i>
                       <p>Post a Question</p>
                     </Link>

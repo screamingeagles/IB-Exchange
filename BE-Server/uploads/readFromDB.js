@@ -151,11 +151,10 @@ export default {
 
             // qry for database
             let sql = "SELECT Questions.QID, Questions.Question, Questions.QuestionDescription, Topics.TID, " +
-                "Topics.TopicName, Users.UID, Users.UserName, Answers.AID, Answers.AnswerText " +
+                "Topics.TopicName, Users.UID, Users.UserName " +
                 "FROM " +
                 "((Questions INNER JOIN Topics ON Questions.TID = Topics.TID) INNER JOIN " +
-                "Users ON Questions.UID = Users.UID) INNER JOIN " +
-                "Answers ON(Questions.QID = Answers.QID) AND (Users.UID = Answers.UID) Where Questions.QID=" + param;
+                "Users ON Questions.UID = Users.UID) Where Questions.QID=" + param;
 
 
             // Query the DB
@@ -295,8 +294,6 @@ export default {
         }
     },
 
-
-
     getAnswersList: async function () {
         var result = [];
         var connection = null;
@@ -405,13 +402,12 @@ export default {
         }
     },
 
-    updateTopic: async function (param) {
+    AddNewAnswer: async function (param) {
         var result = 0;
         var connection = null;
         try {
             connection = await this.getNewConnection();
-            let sql = `UPDATE Topics SET TopicName='${param.TopicName}' WHERE TID=${param.TID}`;
-
+            let sql = `INSERT INTO [Answers] (QID, UID, AnswerText, AnswerDate) Values(${param.QuestionID}, ${param.UserID}, '${param.NewAnswer}', NOW())`;
             await connection.execute(sql);
             result = 1;
         } catch (err) {

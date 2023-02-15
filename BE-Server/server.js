@@ -124,64 +124,19 @@ server.get('/api/TestUpdate', (req, res) => {
 server.post('/api/Answer/Add', async (req, res) => {
     try {
 
-        if (!req.files) {
-            console.log("No File Recieved");
-        }
-        else {
-            //Use the name of the input field (i.e. "document") to retrieve the uploaded file
-            let document = req.files.file; //req.files.document;
+        let item = {
+            "UserID": req.body.UIQ,
+            "QuestionID": req.body.QID,
+            "NewAnswer": req.body.UserResponse,
+        };
+        dataSource.AddNewAnswer(item).then(obj => {
+            res.send({
+                status: true,
+                message: 'Completed',
+                data: { 'Rows Affected': obj }
+            });
+        }).catch(err => { res.status(500).send(err); });
 
-            //Use the mv() method to place the file in upload directory (i.e. "uploads")
-            document.mv('./uploads/' + document.name);
-        }
-
-        var StaffID = req.body.StaffID;
-        if (typeof (StaffID) === "undefined") {
-
-            // get maximum staff Id
-            dataSource.getMaxStaffID()
-                .then(ret => {
-
-                    let item = {
-                        "StaffId": ret,
-                        "FirstName": req.body.FirstName,
-                        "LastName": req.body.LastName,
-                        "DesignationId": req.body.Designation,
-                        "EmiratesId": req.body.EmiratesID,
-                        "EIDExpiry": formatDate(req.body.EIDExpiry),
-                        "FileName": req.body.FileName
-                    };
-
-                    dataSource.addNewStaff(item).then(obj => {
-                        res.send({
-                            status: true,
-                            message: 'Completed',
-                            data: { 'Rows Affected': obj }
-                        });
-                    }).catch(err => { res.status(500).send(err); });
-
-                })
-                .catch(err => { res.status(500).send(err); });
-
-        }
-        else {
-            let item = {
-                "StaffId": StaffID,
-                "FirstName": req.body.FirstName,
-                "LastName": req.body.LastName,
-                "DesignationId": req.body.Designation,
-                "EmiratesId": req.body.EmiratesID,
-                "EIDExpiry": formatDate(req.body.EIDExpiry),
-                "FileName": req.body.FileName
-            };
-            dataSource.updateStaff(item).then(obj => {
-                res.send({
-                    status: true,
-                    message: 'Completed',
-                    data: { 'Rows Affected': obj }
-                });
-            }).catch(err => { res.status(500).send(err); });
-        }
     } catch (err) {
         res.status(500).send(err);
     }
