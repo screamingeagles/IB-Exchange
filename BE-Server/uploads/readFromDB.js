@@ -61,7 +61,7 @@ export default {
 
             // qry for database
             let sql = "SELECT * FROM [Topics] WHERE TID=" + param;
-            console.log(sql);
+
 
             // Query the DB
             await connection.query(sql)
@@ -408,6 +408,31 @@ export default {
         try {
             connection = await this.getNewConnection();
             let sql = `INSERT INTO [Answers] (QID, UID, AnswerText, AnswerDate) Values(${param.QuestionID}, ${param.UserID}, '${param.NewAnswer}', NOW())`;
+            await connection.execute(sql);
+            result = 1;
+        } catch (err) {
+            result = -1;
+        } finally {
+            if (connection) {
+                try {
+                    // Always close connections
+                    await connection.State && connection.Close();
+                } catch (err) {
+                    result = -1;
+                }
+                return result;
+            }
+        }
+    },
+
+    AddNewQuestion: async function (param) {
+        var result = 0;
+        var connection = null;
+        try {
+            connection = await this.getNewConnection();
+
+            let sql = `INSERT INTO [Questions] (UID, TID, CorrectAnswer, Question, QuestionDescription) Values(${param.UserID}, ${param.TopicID}, 1, '${param.Title}', '${param.DetailText}')`;
+
             await connection.execute(sql);
             result = 1;
         } catch (err) {

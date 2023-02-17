@@ -142,6 +142,30 @@ server.post('/api/Answer/Add', async (req, res) => {
     }
 });
 
+
+server.post('/api/Question/Add', async (req, res) => {
+    try {
+
+        let item = {
+            "UserID": req.body.UIQ,
+            "TopicID": req.body.TID,
+            "Title": req.body.questionTitle,
+            "DetailText": req.body.UserQuestion,
+        };
+        dataSource.AddNewQuestion(item).then(obj => {
+            res.send({
+                status: true,
+                message: 'Completed',
+                data: { 'Rows Affected': obj }
+            });
+        }).catch(err => { res.status(500).send(err); });
+
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+
 server.get('/api/file/download/:name', function (req, res) {
     const _fileName = req.params.name;
     let __dirname = fs.realpathSync('.');
